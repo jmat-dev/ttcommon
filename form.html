@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Faculty Course Allocation</title>
+</head>
+<body>
+  <h1>Faculty Course Allocation Form</h1>
+  <form id="facultyForm">
+    <!-- Name Field -->
+    <label for="facultyName">Name of Faculty:</label>
+    <input type="text" id="facultyName" name="facultyName" required>
+    <br><br>
+
+    <!-- Department Dropdown -->
+    <label for="department">Department:</label>
+    <select id="department" name="department" required>
+      <option value="CSE">CSE</option>
+      <option value="ECE">ECE</option>
+      <option value="EEE">EEE</option>
+      <option value="ME">ME</option>
+      <option value="CE">CE</option>
+    </select>
+    <br><br>
+
+    <!-- Course Selection Grid -->
+    <table border="1">
+      <tr>
+        <th>Course Title</th>
+        <th>No. of Batches</th>
+      </tr>
+      <tr>
+        <td><input type="text" name="course1Title" required></td>
+        <td><input type="number" name="course1Batches" min="1" required></td>
+      </tr>
+      <tr>
+        <td><input type="text" name="course2Title"></td>
+        <td><input type="number" name="course2Batches" min="1"></td>
+      </tr>
+    </table>
+    <br>
+
+    <!-- Submit Button -->
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    // Handle form submission
+    const form = document.getElementById('facultyForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(form);
+      const data = {};
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
+
+      // Send data to Apps Script Web App
+      const response = await fetch('https://script.google.com/macros/s/AKfycbxdDtMe0xeOodD-loGfK7NtajR1PYYgsgbbhpq8seOxAKrFd75eJKepORteh_0Cos4/exec', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        alert('Form submitted successfully!');
+        form.reset();
+      } else {
+        alert('There was an error submitting the form.');
+      }
+    });
+  </script>
+</body>
+</html>
